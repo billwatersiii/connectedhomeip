@@ -90,7 +90,9 @@ public:
      *
      * @return CHIP_ERROR     The result of initialization
      */
-    CHIP_ERROR ListenForSessionEstablishment(uint16_t mySessionId, FabricTable * fabrics, SessionEstablishmentDelegate * delegate);
+    CHIP_ERROR ListenForSessionEstablishment(uint16_t mySessionId, FabricTable * fabrics, SessionEstablishmentDelegate * delegate,
+                                             Optional<ReliableMessageProtocolConfig> mrpConfig =
+                                             Optional<ReliableMessageProtocolConfig>::Missing());
 
     /**
      * @brief
@@ -107,7 +109,8 @@ public:
      */
     CHIP_ERROR EstablishSession(const Transport::PeerAddress peerAddress, FabricInfo * fabric, NodeId peerNodeId,
                                 uint16_t mySessionId, Messaging::ExchangeContext * exchangeCtxt,
-                                SessionEstablishmentDelegate * delegate);
+                                SessionEstablishmentDelegate * delegate, Optional<ReliableMessageProtocolConfig> mrpConfig =
+                                Optional<ReliableMessageProtocolConfig>::Missing());
 
     /**
      * Parse a sigma1 message.  This function will return success only if the
@@ -264,6 +267,8 @@ private:
 
     uint8_t mLocalFabricIndex       = 0;
     uint64_t mSessionSetupTimeStamp = 0;
+
+    Optional<ReliableMessageProtocolConfig> mLocalMRPConfig;
 
 protected:
     bool mCASESessionEstablished = false;
